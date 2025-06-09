@@ -5,33 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Amo's Bunker</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Amo's Bunker</h1>
-    <div id="editor-access">-</div>
-    <ul id="list-container"></ul>
-    <div id="page-content" style="display: none;">
-        <img id="page-image" src="" alt="Seitenbild">
-        <p id="page-text"></p>
-        <button id="copy-acc">Copy Acc</button>
-        <button id="copy-pw">Copy Pw</button>
-        <button id="edit-page" style="display: none;">-</button>
-    </div>
-    <div id="editor" style="display: none;">
-        <h2>Listen-Editor</h2>
-        <input type="text" id="new-item" placeholder="Neuer Listeneintrag">
-        <button onclick="addItem()">Hinzufügen</button>
-        <button onclick="saveList()">Speichern</button>
-        <ul id="item-list"></ul>
-        <div id="page-editor" style="display: none;">
-            <h3>Seite bearbeiten</h3>
-            <input type="text" id="edit-image-url" placeholder="Bild-URL">
-            <textarea id="edit-text" placeholder="Text"></textarea>
-            <input type="text" id="edit-acc" placeholder="Account-Wert">
-            <input type="text" id="edit-pw" placeholder="Passwort-Wert">
-            <button onclick="savePage()">Speichern</button>
+    <div id="vault-overlay">
+        <div id="vault-lock">
+            <h2>Tresor-Code eingeben</h2>
+            <input type="range" id="vault-dial" min="0" max="99" value="0">
+            <div id="vault-code-display">0</div>
+            <button onclick="submitVaultCode()">Bestätigen</button>
         </div>
+    </div>
+    <div id="main-content" style="filter: blur(10px);">
+        <h1>Amo's Bunker</h1>
+        <div id="editor-access">-</div>
+        <ul id="list-container"></ul>
+        <div id="page-content" style="display: none;">
+            <button id="back-btn">&lt;</button>
+            <img id="page-image" src="" alt="Seitenbild">
+            <p id="page-text"></p>
+            <button id="copy-acc">Copy Acc</button>
+            <button id="copy-pw">Copy Pw</button>
+            <button id="edit-page" style="display: none;">-</button>
+        </div>
+        <div id="editor" style="display: none;">
+            <h2>Listen-Editor</h2>
+            <input type="text" id="new-item" placeholder="Neuer Listeneintrag">
+            <button onclick="addItem()">Hinzufügen</button>
+            <button onclick="saveList()">Speichern</button>
+            <ul id="item-list"></ul>
+            <div id="page-editor" style="display: none;">
+                <h3>Seite bearbeiten</h3>
+                <input type="text" id="edit-image-url" placeholder="Bild-URL">
+                <textarea id="edit-text" placeholder="Text"></textarea>
+                <input type="text" id="edit-acc" placeholder="Account-Wert">
+                <input type="text" id="edit-pw" placeholder="Passwort-Wert">
+                <button onclick="savePage()">Speichern</button>
+            </div>
+        </div>
+        <div id="copy-toast" style="display: none;">Copied!</div>
     </div>
     <script src="script.js"></script>
 </body>
