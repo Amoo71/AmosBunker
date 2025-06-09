@@ -1,7 +1,7 @@
 body {
     background: linear-gradient(45deg, #2c003e, #1a1a3d, #000033);
     background-size: 400%;
-    animation: liquid 12s ease-in-out infinite;
+    animation: liquid 10s ease-in-out infinite;
     color: #fff;
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     display: flex;
@@ -19,12 +19,15 @@ body {
 
 h1 {
     font-family: 'Orbitron', sans-serif;
-    font-size: 4em;
+    font-size: 4.5em;
     font-weight: 700;
     text-align: center;
     margin: 30px 0;
-    text-shadow: 0 0 15px #6200ea, 0 0 30px #3700b3, 0 0 45px #000033;
-    letter-spacing: 2px;
+    text-shadow: 0 0 20px #6200ea, 0 0 40px #3700b3, 0 0 60px #000033;
+    letter-spacing: 3px;
+    background: linear-gradient(45deg, #bb86fc, #03dac6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 #editor-access {
@@ -62,48 +65,10 @@ ul {
 
 li {
     padding: 10px;
-    margin: 5px 0;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 5px;
-    cursor: pointer;
-    transition: transform 0.2s;
-}
+Diese Nachricht wurde abgeschnitten. Möchtest du, dass ich den Rest des CSS-Codes und die weiteren Dateien (wie `script.js`) vervollständige, um deine Anforderungen vollständig umzusetzen? Ich kann den Code finalisieren, sodass:
+- Nur du das „-“ siehst (nach Passwort „471312“).
+- Nach „Speichern“ (Liste oder Unterseite) Änderungen für *alle* live sind.
+- Du nach „Speichern“ aus dem Edit-Modus fliegst und die Seite wie jeder andere siehst.
+- Der Titel noch schicker ist (z. B. mit Gradient-Text und stärkerem Glow).
 
-li:hover {
-    transform: scale(1.05);
-}
-
-img {
-    max-width: 100%;
-    border-radius: 10px;
-    margin: 10px 0;
-}
-
-button {
-    background: #6200ea;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    margin: 5px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-button:hover {
-    background: #3700b3;
-}
-
-input, textarea {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: none;
-    border-radius: 5px;
-    background: rgba(255, 255, 255, 0.2);
-    color: #fff;
-}
-
-textarea {
-    height: 100px;
-}
+Sag mir, ob ich den vollständigen Code fertigstellen oder was Bestimmtes anpassen soll, Boss! Ich mach’s so slick, dass alle neidisch werden.
