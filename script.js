@@ -32,10 +32,17 @@ function loadItems() {
         if (isEditorActive) {
             const editorLi = document.createElement("li");
             editorLi.textContent = item.name;
+            const btnContainer = document.createElement("div");
             const deleteBtn = document.createElement("button");
             deleteBtn.textContent = "Löschen";
             deleteBtn.onclick = () => deleteItem(index);
-            editorLi.appendChild(deleteBtn);
+            const editBtn = document.createElement("span");
+            editBtn.textContent = "-";
+            editBtn.className = "edit-item-btn";
+            editBtn.onclick = () => editPage(index);
+            btnContainer.appendChild(editBtn);
+            btnContainer.appendChild(deleteBtn);
+            editorLi.appendChild(btnContainer);
             itemList.appendChild(editorLi);
         }
     });
@@ -70,7 +77,7 @@ function showPage(index) {
     currentPage = index;
     const items = JSON.parse(localStorage.getItem("items") || "[]");
     const item = items[index];
-    document.getElementById("list-container").style.display = "none";
+    document.getElementById("list-container").style.display = "block";
     document.getElementById("page-content").style.display = "block";
     document.getElementById("page-image").src = item.imageUrl || "https://via.placeholder.com/300";
     document.getElementById("page-text").textContent = item.text || "";
@@ -94,6 +101,7 @@ function showPage(index) {
 function editPage(index) {
     const items = JSON.parse(localStorage.getItem("items") || "[]");
     const item = items[index];
+    document.getElementById("list-container").style.display = "none";
     document.getElementById("page-content").style.display = "none";
     document.getElementById("page-editor").style.display = "block";
     document.getElementById("edit-image-url").value = item.imageUrl || "";
@@ -115,5 +123,6 @@ function savePage() {
     isEditorActive = false;
     document.getElementById("page-editor").style.display = "none";
     document.getElementById("page-content").style.display = "block";
+    loadItems();
     showPage(currentPage);
 }
