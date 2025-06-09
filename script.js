@@ -2,11 +2,20 @@ const password = "471312";
 let isEditorActive = false;
 let currentPage = null;
 
+// Check if user is logged in on page load
+if (localStorage.getItem("editorLoggedIn") === "true") {
+    isEditorActive = true;
+    document.getElementById("editor-access").style.display = "block";
+}
+loadItems();
+
 document.getElementById("editor-access").onclick = () => {
     if (!isEditorActive) {
         const input = prompt("Passwort eingeben:");
         if (input === password) {
             isEditorActive = true;
+            localStorage.setItem("editorLoggedIn", "true");
+            document.getElementById("editor-access").style.display = "block";
             document.getElementById("editor").style.display = "block";
             loadItems();
         } else {
@@ -63,8 +72,11 @@ function deleteItem(index) {
 }
 
 function saveList() {
-    loadItems();
+    isEditorActive = false;
+    localStorage.setItem("editorLoggedIn", "false");
     document.getElementById("editor").style.display = "none";
+    document.getElementById("editor-access").style.display = "none";
+    loadItems();
 }
 
 function showPage(index) {
@@ -107,7 +119,10 @@ function savePage() {
         pw: document.getElementById("edit-pw").value
     };
     localStorage.setItem("items", JSON.stringify(items));
+    isEditorActive = false;
+    localStorage.setItem("editorLoggedIn", "false");
     document.getElementById("page-editor").style.display = "none";
     document.getElementById("page-content").style.display = "block";
+    document.getElementById("editor-access").style.display = "none";
     showPage(currentPage);
 }
