@@ -5,16 +5,49 @@ let isEditorActive = false;
 let currentPage = null;
 
 // Vault lock logic
-document.getElementById("vault-dial").addEventListener("input", (e) => {
-    document.getElementById("vault-code-display").textContent = e.target.value;
-});
+let rotation = 0;
+const dial = document.getElementById("vault-dial");
+const codeDisplay = document.getElementById("vault-code-display");
+
+document.getElementById("vault-dial").addEventListener("mousedown", startRotate);
+document.addEventListener("mousemove", rotateDial);
+document.addEventListener("mouseup", stopRotate);
+document.getElementById("vault-dial").addEventListener("touchstart", startRotate);
+document.addEventListener("touchmove", rotateDial);
+document.addEventListener("touchend", stopRotate);
+
+let isRotating = false;
+
+function startRotate(e) {
+    isRotating = true;
+    e.preventDefault();
+}
+
+function rotateDial(e) {
+    if (!isRotating) return;
+    const rect = dial.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const clientX = e.clientX || e.touches[0].clientX;
+    const clientY = e.clientY || e.touches[0].clientY;
+    const angle = Math.atan2(clientY - centerY, clientX - centerX) * 180 / Math.PI;
+    rotation = (angle + 360) % 360;
+    const value = Math.round(rotation / 3.6); // Map 0-360° to 0-99
+    dial.style.transform = `rotate(${rotation}deg)`;
+    codeDisplay.textContent = value;
+}
+
+function stopRotate() {
+    isRotating = false;
+}
 
 function submitVaultCode() {
-    const value = document.getElementById("vault-dial").value;
-    currentVaultInput.push(value);
+    const value = Math.round(rotation / 3.6);
+    currentVaultInput.push(value.toString());
     if (currentVaultInput.length < vaultCode.length) {
-        document.getElementById("vault-code-display").textContent = "0";
-        document.getElementById("vault-dial").value = 0;
+        rotation = 0;
+        dial.style.transform = `rotate(0deg)`;
+        codeDisplay.textContent = "0";
     } else {
         if (currentVaultInput.join(",") === vaultCode.join(",")) {
             document.getElementById("vault-overlay").style.display = "none";
@@ -23,8 +56,9 @@ function submitVaultCode() {
         } else {
             alert("Falscher Code, Boss!");
             currentVaultInput = [];
-            document.getElementById("vault-code-display").textContent = "0";
-            document.getElementById("vault-dial").value = 0;
+            rotation = 0;
+            dial.style.transform = `rotate(0deg)`;
+            codeDisplay.textContent = "0";
         }
     }
 }
