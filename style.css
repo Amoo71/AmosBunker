@@ -1,8 +1,8 @@
 body {
-    background: linear-gradient(45deg, #2c003e, #1a1a3d, #000033);
+    background: linear-gradient(45deg, #1a0033, #0d0d1a, #000026);
     background-size: 400%;
     animation: liquid 10s ease-in-out infinite;
-    color: #fff;
+    color: #e0e0e0;
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     display: flex;
     flex-direction: column;
@@ -19,39 +19,40 @@ body {
 
 h1 {
     font-family: 'Orbitron', sans-serif;
-    font-size: 4.5em;
+    font-size: 4.8em;
     font-weight: 700;
     text-align: center;
     margin: 30px 0;
-    text-shadow: 0 0 20px #6200ea, 0 0 40px #3700b3, 0 0 60px #000033;
-    letter-spacing: 3px;
-    background: linear-gradient(45deg, #bb86fc, #03dac6);
+    text-shadow: 0 0 25px #4a0072, 0 0 50px #1a0033, 0 0 75px #000026;
+    background: linear-gradient(45deg, #4a0072, #003087);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    letter-spacing: 4px;
 }
 
-#editor-access {
+#editor-access, #edit-page {
     position: fixed;
     bottom: 20px;
     right: 20px;
     font-size: 1.5em;
     cursor: pointer;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
     padding: 5px 10px;
     border-radius: 5px;
     backdrop-filter: blur(5px);
     transition: transform 0.2s;
+    color: #bb86fc;
 }
 
-#editor-access:hover {
+#editor-access:hover, #edit-page:hover {
     transform: scale(1.2);
 }
 
 #list-container, #page-content, #editor {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(10px);
     width: 80%;
     max-width: 600px;
@@ -65,10 +66,48 @@ ul {
 
 li {
     padding: 10px;
-Diese Nachricht wurde abgeschnitten. Möchtest du, dass ich den Rest des CSS-Codes und die weiteren Dateien (wie `script.js`) vervollständige, um deine Anforderungen vollständig umzusetzen? Ich kann den Code finalisieren, sodass:
-- Nur du das „-“ siehst (nach Passwort „471312“).
-- Nach „Speichern“ (Liste oder Unterseite) Änderungen für *alle* live sind.
-- Du nach „Speichern“ aus dem Edit-Modus fliegst und die Seite wie jeder andere siehst.
-- Der Titel noch schicker ist (z. B. mit Gradient-Text und stärkerem Glow).
+    margin: 5px 0;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
 
-Sag mir, ob ich den vollständigen Code fertigstellen oder was Bestimmtes anpassen soll, Boss! Ich mach’s so slick, dass alle neidisch werden.
+li:hover {
+    transform: scale(1.05);
+}
+
+img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin: 10px 0;
+}
+
+button {
+    background: #4a0072;
+    color: #e0e0e0;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background: #2c003e;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #e0e0e0;
+}
+
+textarea {
+    height: 100px;
+}
