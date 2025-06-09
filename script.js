@@ -2,28 +2,17 @@ const password = "471312";
 let isEditorActive = false;
 let currentPage = null;
 
-// Check if user is logged in on page load
-if (localStorage.getItem("editorLoggedIn") === "true") {
-    isEditorActive = true;
-    document.getElementById("editor-access").style.display = "block";
-}
+// Initial load
 loadItems();
 
 document.getElementById("editor-access").onclick = () => {
-    if (!isEditorActive) {
-        const input = prompt("Passwort eingeben:");
-        if (input === password) {
-            isEditorActive = true;
-            localStorage.setItem("editorLoggedIn", "true");
-            document.getElementById("editor-access").style.display = "block";
-            document.getElementById("editor").style.display = "block";
-            loadItems();
-        } else {
-            alert("Falsches Passwort, Boss!");
-        }
-    } else {
+    const input = prompt("Passwort eingeben:");
+    if (input === password) {
+        isEditorActive = true;
         document.getElementById("editor").style.display = "block";
         loadItems();
+    } else {
+        alert("Falsches Passwort, Boss!");
     }
 };
 
@@ -73,9 +62,7 @@ function deleteItem(index) {
 
 function saveList() {
     isEditorActive = false;
-    localStorage.setItem("editorLoggedIn", "false");
     document.getElementById("editor").style.display = "none";
-    document.getElementById("editor-access").style.display = "none";
     loadItems();
 }
 
@@ -87,8 +74,14 @@ function showPage(index) {
     document.getElementById("page-content").style.display = "block";
     document.getElementById("page-image").src = item.imageUrl || "https://via.placeholder.com/300";
     document.getElementById("page-text").textContent = item.text || "";
-    document.getElementById("copy-acc").onclick = () => navigator.clipboard.writeText(item.acc || "");
-    document.getElementById("copy-pw").onclick = () => navigator.clipboard.writeText(item.pw || "");
+    document.getElementById("copy-acc").onclick = () => {
+        navigator.clipboard.writeText(item.acc || "");
+        alert("Account-Wert kopiert!");
+    };
+    document.getElementById("copy-pw").onclick = () => {
+        navigator.clipboard.writeText(item.pw || "");
+        alert("Passwort-Wert kopiert!");
+    };
     
     if (isEditorActive) {
         document.getElementById("edit-page").style.display = "block";
@@ -120,9 +113,7 @@ function savePage() {
     };
     localStorage.setItem("items", JSON.stringify(items));
     isEditorActive = false;
-    localStorage.setItem("editorLoggedIn", "false");
     document.getElementById("page-editor").style.display = "none";
     document.getElementById("page-content").style.display = "block";
-    document.getElementById("editor-access").style.display = "none";
     showPage(currentPage);
 }
