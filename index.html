@@ -11,8 +11,10 @@
     <div id="vault-overlay">
         <div id="vault-lock">
             <h2>Tresor-Code eingeben</h2>
-            <input type="range" id="vault-dial" min="0" max="99" value="0">
-            <div id="vault-code-display">0</div>
+            <div id="vault-dial-container">
+                <div id="vault-dial"></div>
+                <div id="vault-code-display">0</div>
+            </div>
             <button onclick="submitVaultCode()">Bestätigen</button>
         </div>
     </div>
@@ -21,7 +23,7 @@
         <div id="editor-access">-</div>
         <ul id="list-container"></ul>
         <div id="page-content" style="display: none;">
-            <button id="back-btn">&lt;</button>
+            <button id="back-btn"><</button>
             <img id="page-image" src="" alt="Seitenbild">
             <p id="page-text"></p>
             <button id="copy-acc">Copy Acc</button>
