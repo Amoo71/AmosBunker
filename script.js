@@ -23,20 +23,28 @@ document.getElementById("vault-code-input").addEventListener("keypress", (event)
     }
 });
 
+// Editor access logic
+const editorAccess = document.getElementById("editor-access");
+if (!editorAccess) {
+    console.error("Editor access button not found!");
+} else {
+    editorAccess.addEventListener("click", () => {
+        console.log("Editor access clicked!");
+        const input = prompt("Enter Password:");
+        if (input === password) {
+            console.log("Correct password, opening editor...");
+            isEditorActive = true;
+            document.getElementById("editor").style.display = "block";
+            loadItems();
+        } else {
+            alert("Wrong Password, Boss!");
+        }
+    });
+}
+
 // Initial load (vault overlay shown, content blurred)
 document.getElementById("list-container").style.display = "none";
 document.getElementById("page-content").style.display = "none";
-
-document.getElementById("editor-access").onclick = () => {
-    const input = prompt("Enter Password:");
-    if (input === password) {
-        isEditorActive = true;
-        document.getElementById("editor").style.display = "block";
-        loadItems();
-    } else {
-        alert("Wrong Password, Boss!");
-    }
-};
 
 document.getElementById("back-btn").onclick = () => {
     document.getElementById("page-content").style.display = "none";
