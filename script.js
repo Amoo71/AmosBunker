@@ -109,13 +109,37 @@ function showPage(index) {
     document.getElementById("page-content").style.display = "block";
     document.getElementById("page-image").src = item.imageUrl || "https://via.placeholder.com/300";
     document.getElementById("page-text").textContent = item.text || "";
-    document.getElementById("copy-acc").onclick = () => {
-        navigator.clipboard.writeText(item.acc || "");
-        showToast();
+    
+    // Copy buttons logic
+    const copyAccBtn = document.getElementById("copy-acc");
+    const copyPwBtn = document.getElementById("copy-pw");
+    
+    copyAccBtn.onclick = () => {
+        console.log("Copy Acc clicked, copying:", item.acc || "");
+        if (item.acc) {
+            navigator.clipboard.writeText(item.acc).then(() => {
+                showToast();
+            }).catch(err => {
+                console.error("Failed to copy account:", err);
+                alert("Copy failed!");
+            });
+        } else {
+            alert("No account value to copy!");
+        }
     };
-    document.getElementById("copy-pw").onclick = () => {
-        navigator.clipboard.writeText(item.pw || "");
-        showToast();
+    
+    copyPwBtn.onclick = () => {
+        console.log("Copy Pw clicked, copying:", item.pw || "");
+        if (item.pw) {
+            navigator.clipboard.writeText(item.pw).then(() => {
+                showToast();
+            }).catch(err => {
+                console.error("Failed to copy password:", err);
+                alert("Copy failed!");
+            });
+        } else {
+            alert("No password value to copy!");
+        }
     };
     
     if (isEditorActive) {
@@ -155,10 +179,12 @@ function savePage() {
 }
 
 function showToast() {
+    console.log("Showing toast...");
     const toast = document.getElementById("copy-toast");
     toast.style.display = "block";
     toast.classList.add("show");
     setTimeout(() => {
+        console.log("Hiding toast...");
         toast.classList.remove("show");
         toast.style.display = "none";
     }, 2000);
