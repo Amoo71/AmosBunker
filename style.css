@@ -67,33 +67,17 @@ h1 {
     backdrop-filter: blur(10px);
 }
 
-#vault-dial-container {
-    position: relative;
-    width: 150px;
-    height: 150px;
-    margin: 1rem auto;
-}
-
-#vault-dial {
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle, #4a0072 0%, #2c003e 70%);
-    border-radius: 50%;
-    border: 5px solid #bb86fc;
-    box-shadow: 0 0 15px rgba(186, 134, 252, 0.5);
-    position: relative;
-    cursor: pointer;
-    transition: transform 0.1s linear;
-}
-
-#vault-code-display {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 2rem;
+#vault-code-input {
+    width: 80%;
+    max-width: 200px;
+    padding: 0.75rem;
+    margin: 1rem 0;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
     color: #e0e0e0;
-    text-shadow: 0 0 10px #bb86fc;
+    font-size: 1.2rem;
+    text-align: center;
 }
 
 #vault-lock button {
@@ -268,11 +252,8 @@ textarea {
     #vault-lock {
         padding: 1rem;
     }
-    #vault-dial-container {
-        width: 120px;
-        height: 120px;
-    }
-    #vault-code-display {
-        font-size: 1.5rem;
+    #vault-code-input {
+        width: 90%;
+        font-size: 1rem;
     }
 }
