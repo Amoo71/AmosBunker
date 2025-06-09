@@ -3,13 +3,18 @@ let isEditorActive = false;
 let currentPage = null;
 
 document.getElementById("editor-access").onclick = () => {
-    const input = prompt("Passwort eingeben:");
-    if (input === password) {
-        isEditorActive = true;
+    if (!isEditorActive) {
+        const input = prompt("Passwort eingeben:");
+        if (input === password) {
+            isEditorActive = true;
+            document.getElementById("editor").style.display = "block";
+            loadItems();
+        } else {
+            alert("Falsches Passwort, Boss!");
+        }
+    } else {
         document.getElementById("editor").style.display = "block";
         loadItems();
-    } else {
-        alert("Falsches Passwort, Boss!");
     }
 };
 
@@ -57,6 +62,11 @@ function deleteItem(index) {
     loadItems();
 }
 
+function saveList() {
+    loadItems();
+    document.getElementById("editor").style.display = "none";
+}
+
 function showPage(index) {
     currentPage = index;
     const items = JSON.parse(localStorage.getItem("items") || "[]");
@@ -71,6 +81,8 @@ function showPage(index) {
     if (isEditorActive) {
         document.getElementById("edit-page").style.display = "block";
         document.getElementById("edit-page").onclick = () => editPage(index);
+    } else {
+        document.getElementById("edit-page").style.display = "none";
     }
 }
 
@@ -96,5 +108,6 @@ function savePage() {
     };
     localStorage.setItem("items", JSON.stringify(items));
     document.getElementById("page-editor").style.display = "none";
+    document.getElementById("page-content").style.display = "block";
     showPage(currentPage);
 }
