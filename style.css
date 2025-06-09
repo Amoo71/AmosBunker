@@ -1,113 +1,112 @@
-body {
-    background: linear-gradient(45deg, #1a0033, #0d0d1a, #000026);
-    background-size: 400%;
-    animation: liquid 10s ease-in-out infinite;
-    color: #e0e0e0;
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
+const password = "471312";
+let isEditorActive = false;
+let currentPage = null;
+
+loadItems();
+
+document.getElementById("editor-access").onclick = () => {
+    const input = prompt("Passwort eingeben:");
+    if (input === password) {
+        isEditorActive = true;
+        document.getElementById("editor").style.display = "block";
+        loadItems();
+    } else {
+        alert("Falsches Passwort, Boss!");
+    }
+};
+
+function loadItems() {
+    const items = JSON.parse(localStorage.getItem("items") || "[]");
+    const listContainer = document.getElementById("list-container");
+    const itemList = document.getElementById("item-list");
+    listContainer.innerHTML = "";
+    itemList.innerHTML = "";
+    
+    items.forEach((item, index) => {
+        const li = document.createElement("li");
+        li.textContent = item.name;
+        li.onclick = () => showPage(index);
+        listContainer.appendChild(li);
+        
+        if (isEditorActive) {
+            const editorLi = document.createElement("li");
+            editorLi.textContent = item.name;
+            const deleteBtn = document.createElement("button");
+            deleteBtn.textContent = "Löschen";
+            deleteBtn.onclick = () => deleteItem(index);
+            editorLi.appendChild(deleteBtn);
+            itemList.appendChild(editorLi);
+        }
+    });
 }
 
-@keyframes liquid {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+function addItem() {
+    const newItemInput = document.getElementById("new-item");
+    const name = newItemInput.value.trim();
+    if (!name) return;
+    
+    const items = JSON.parse(localStorage.getItem("items") || "[]");
+    items.push({ name, imageUrl: "", text: "", acc: "", pw: "" });
+    localStorage.setItem("items", JSON.stringify(items));
+    newItemInput.value = "";
+    loadItems();
 }
 
-h1 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 4.8em;
-    font-weight: 700;
-    text-align: center;
-    margin: 30px 0;
-    text-shadow: 0 0 25px #4a0072, 0 0 50px #1a0033, 0 0 75px #000026;
-    background: linear-gradient(45deg, #4a0072, #003087);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    letter-spacing: 4px;
+function deleteItem(index) {
+    const items = JSON.parse(localStorage.getItem("items") || "[]");
+    items.splice(index, 1);
+    localStorage.setItem("items", JSON.stringify(items));
+    loadItems();
 }
 
-#editor-access, #edit-page {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    font-size: 1.5em;
-    cursor: pointer;
-    background: rgba(255, 255, 255, 0.05);
-    padding: 5px 10px;
-    border-radius: 5px;
-    backdrop-filter: blur(5px);
-    transition: transform 0.2s;
-    color: #bb86fc;
+function saveList() {
+    isEditorActive = false;
+    document.getElementById("editor").style.display = "none";
+    loadItems();
 }
 
-#editor-access:hover, #edit-page:hover {
-    transform: scale(1.2);
+function showPage(index) {
+    currentPage = index;
+    const items = JSON.parse(localStorage.getItem("items") || "[]");
+    const item = items[index];
+    document.getElementById("list-container").style.display = "none";
+    document.getElementById("page-content").style.display = "block";
+    document.getElementById("page-image").src = item.imageUrl || "https://via.placeholder.com/300";
+    document.getElementById("page-text").textContent = item.text || "";
+    document.getElementById("copy-acc").onclick = () => navigator.clipboard.writeText(item.acc || "");
+    document.getElementById("copy-pw").onclick = () => navigator.clipboard.writeText(item.pw || "");
+    
+    if (isEditorActive) {
+        document.getElementById("edit-page").style.display = "block";
+        document.getElementById("edit-page").onclick = () => editPage(index);
+    } else {
+        document.getElementById("edit-page").style.display = "none";
+    }
 }
 
-#list-container, #page-content, #editor {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(10px);
-    width: 80%;
-    max-width: 600px;
-    margin: 20px 0;
+function editPage(index) {
+    const items = JSON.parse(localStorage.getItem("items") || "[]");
+    const item = items[index];
+    document.getElementById("page-content").style.display = "none";
+    document.getElementById("page-editor").style.display = "block";
+    document.getElementById("edit-image-url").value = item.imageUrl || "";
+    document.getElementById("edit-text").value = item.text || "";
+    document.getElementById("edit-acc").value = item.acc || "";
+    document.getElementById("edit-pw").value = item.pw || "";
 }
 
-ul {
-    list-style: none;
-    padding: 0;
-}
-
-li {
-    padding: 10px;
-    margin: 5px 0;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 5px;
-    cursor: pointer;
-    transition: transform 0.2s;
-}
-
-li:hover {
-    transform: scale(1.05);
-}
-
-img {
-    max-width: 100%;
-    border-radius: 10px;
-    margin: 10px 0;
-}
-
-button {
-    background: #4a0072;
-    color: #e0e0e0;
-    border: none;
-    padding: 10px 20px;
-    margin: 5px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-button:hover {
-    background: #2c003e;
-}
-
-input, textarea {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: none;
-    border-radius: 5px;
-    background: rgba(255, 255, 255, 0.1);
-    color: #e0e0e0;
-}
-
-textarea {
-    height: 100px;
+function savePage() {
+    const items = JSON.parse(localStorage.getItem("items") || "[]");
+    items[currentPage] = {
+        name: items[currentPage].name,
+        imageUrl: document.getElementById("edit-image-url").value,
+        text: document.getElementById("edit-text").value,
+        acc: document.getElementById("edit-acc").value,
+        pw: document.getElementById("edit-pw").value
+    };
+    localStorage.setItem("items", JSON.stringify(items));
+    isEditorActive = false;
+    document.getElementById("page-editor").style.display = "none";
+    document.getElementById("page-content").style.display = "block";
+    showPage(currentPage);
 }
