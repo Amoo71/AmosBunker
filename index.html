@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,9 +10,9 @@
 <body>
     <div id="vault-overlay">
         <div id="vault-lock">
-            <h2>Tresor</h2>
-            <input type="text" id="vault-code-input" placeholder="Code eingeben">
-            <button onclick="submitVaultCode()">Bestätigen</button>
+            <h2>Vault</h2>
+            <input type="text" id="vault-code-input" placeholder="Enter Code">
+            <button onclick="submitVaultCode()">Confirm</button>
         </div>
     </div>
     <div id="main-content" style="filter: blur(10px);">
@@ -21,25 +21,25 @@
         <ul id="list-container"></ul>
         <div id="page-content" style="display: none;">
             <button id="back-btn"><</button>
-            <img id="page-image" src="" alt="Seitenbild">
+            <img id="page-image" src="" alt="Page Image">
             <p id="page-text"></p>
             <button id="copy-acc">Copy Acc</button>
             <button id="copy-pw">Copy Pw</button>
             <button id="edit-page" style="display: none;">-</button>
         </div>
         <div id="editor" style="display: none;">
-            <h2>Listen-Editor</h2>
-            <input type="text" id="new-item" placeholder="Neuer Listeneintrag">
-            <button onclick="addItem()">Hinzufügen</button>
-            <button onclick="saveList()">Speichern</button>
+            <h2>List Editor</h2>
+            <input type="text" id="new-item" placeholder="New List Item">
+            <button onclick="addItem()">Add</button>
+            <button onclick="saveList()">Save</button>
             <ul id="item-list"></ul>
             <div id="page-editor" style="display: none;">
-                <h3>Seite bearbeiten</h3>
-                <input type="text" id="edit-image-url" placeholder="Bild-URL">
+                <h3>Edit Page</h3>
+                <input type="text" id="edit-image-url" placeholder="Image URL">
                 <textarea id="edit-text" placeholder="Text"></textarea>
-                <input type="text" id="edit-acc" placeholder="Account-Wert">
-                <input type="text" id="edit-pw" placeholder="Passwort-Wert">
-                <button onclick="savePage()">Speichern</button>
+                <input type="text" id="edit-acc" placeholder="Account Value">
+                <input type="text" id="edit-pw" placeholder="Password Value">
+                <button onclick="savePage()">Save</button>
             </div>
         </div>
         <div id="copy-toast" style="display: none;">Copied!</div>
