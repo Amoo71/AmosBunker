@@ -9,33 +9,32 @@ function submitVaultCode() {
     if (input === vaultCode) {
         document.getElementById("vault-overlay").style.display = "none";
         document.getElementById("main-content").style.filter = "none";
+        document.getElementById("list-container").style.display = "block";
         loadItems();
     } else {
-        alert("Falscher Code, Boss!");
+        alert("Wrong Code, Boss!");
         document.getElementById("vault-code-input").value = "";
     }
 }
 
-// Initial load (vault overlay shown, content blurred)
-document.getElementById("list-container").style.display = "none";
-document.getElementById("page-content").style.display = "none";
-
-documentევ
-
-System: document.getElementById(" vault-code-input").addEventListener("keypress", (event) => {
+document.getElementById("vault-code-input").addEventListener("keypress", (event) => {
     if (event.key === "Enter") {
         submitVaultCode();
     }
 });
 
+// Initial load (vault overlay shown, content blurred)
+document.getElementById("list-container").style.display = "none";
+document.getElementById("page-content").style.display = "none";
+
 document.getElementById("editor-access").onclick = () => {
-    const input = prompt("Passwort eingeben:");
+    const input = prompt("Enter Password:");
     if (input === password) {
         isEditorActive = true;
         document.getElementById("editor").style.display = "block";
         loadItems();
     } else {
-        alert("Falsches Passwort, Boss!");
+        alert("Wrong Password, Boss!");
     }
 };
 
@@ -61,7 +60,7 @@ function loadItems() {
             const editorLi = document.createElement("li");
             editorLi.textContent = item.name;
             const deleteBtn = document.createElement("button");
-            deleteBtn.textContent = "Löschen";
+            deleteBtn.textContent = "Delete";
             deleteBtn.onclick = () => deleteItem(index);
             editorLi.appendChild(deleteBtn);
             itemList.appendChild(editorLi);
