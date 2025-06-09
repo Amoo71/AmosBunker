@@ -18,8 +18,8 @@ body {
 }
 
 h1 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 5em;
+    font-family: 'Exo 2', sans-serif;
+    font-size: 5.2em;
     font-weight: 700;
     text-align: center;
     margin: 30px 0;
@@ -27,7 +27,7 @@ h1 {
     background: linear-gradient(45deg, #4a0072, #003087, #2c003e);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    letter-spacing: 5px;
+    letter-spacing: 6px;
     animation: glow 2s ease-in-out infinite alternate;
 }
 
@@ -36,10 +36,7 @@ h1 {
     100% { text-shadow: 0 0 30px #4a0072, 0 0 60px #1a0033, 0 0 90px #000026; }
 }
 
-#editor-access, #edit-page {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
+#editor-access, #edit-page, .edit-item-btn {
     font-size: 1.5em;
     cursor: pointer;
     background: rgba(255, 255, 255, 0.05);
@@ -49,21 +46,37 @@ h1 {
     transition: transform 0.2s;
     color: #bb86fc;
     box-shadow: 0 0 10px rgba(186, 134, 252, 0.3);
+    margin-left: 10px;
 }
 
-#editor-access:hover, #edit-page:hover {
+#editor-access {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}
+
+#edit-page {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}
+
+#editor-access:hover, #edit-page:hover, .edit-item-btn:hover {
     transform: scale(1.2);
 }
 
 #list-container, #page-content, #editor {
+    width: 80%;
+    max-width: 600px;
+    margin: 20px 0;
+}
+
+#page-content, #editor {
     background: rgba(255, 255, 255, 0.05);
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(10px);
-    width: 80%;
-    max-width: 600px;
-    margin: 20px 0;
 }
 
 ul {
@@ -81,6 +94,9 @@ li {
     color: #e0e0e0;
     font-weight: 500;
     box-shadow: 0 0 10px rgba(186, 134, 252, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 li:hover {
