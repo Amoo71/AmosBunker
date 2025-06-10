@@ -1,49 +1,88 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Amo's Bunker</title>
-    <link rel="stylesheet" href="./style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="vault-overlay">
-        <div id="vault-lock">
-            <h2>Vault</h2>
-            <input type="password" id="vault-code-input" placeholder="Enter Code">
-            <button onclick="submitVaultCode()">Confirm</button>
-        </div>
+    <!-- Vault Entry Overlay -->
+    <div class="vault-overlay" id="vaultOverlay">
+        <h1 class="vault-title">VAULT</h1>
+        <input type="password" class="vault-input" id="vaultPassword" placeholder="Enter Password" maxlength="4">
     </div>
-    <div id="main-content" style="filter: blur(10px);">
-        <h1>Amo's Bunker</h1>
-        <div id="editor-access">-</div>
-        <ul id="list-container"></ul>
-        <div id="page-content" style="display: none;">
-            <button id="back-btn"><</button>
-            <img id="page-image" src="" alt="Page Image">
-            <p id="page-text"></p>
-            <button id="copy-acc">Copy Acc</button>
-            <button id="copy-pw">Copy Pw</button>
-            <button id="edit-page" style="display: none;">-</button>
-        </div>
-        <div id="editor" style="display: none;">
-            <h2>List Editor</h2>
-            <input type="text" id="new-item" placeholder="New List Item">
-            <button onclick="addItem()">Add</button>
-            <button onclick="saveList()">Save</button>
-            <ul id="item-list"></ul>
-            <div id="page-editor" style="display: none;">
-                <h3>Edit Page</h3>
-                <input type="text" id="edit-image-url" placeholder="Image URL">
-                <textarea id="edit-text" placeholder="Text"></textarea>
-                <input type="text" id="edit-acc" placeholder="Account Value">
-                <input type="text" id="edit-pw" placeholder="Password Value">
-                <button onclick="savePage()">Save</button>
+
+    <!-- Edit Mode Password Modal -->
+    <div class="edit-password-overlay" id="editPasswordOverlay">
+        <div class="edit-password-modal">
+            <h3>Enter Edit Password</h3>
+            <input type="password" class="vault-input" id="editPassword" placeholder="Password" maxlength="6">
+            <div class="modal-buttons">
+                <button class="modal-btn confirm-btn" onclick="confirmEditPassword()">Enter</button>
+                <button class="modal-btn cancel-btn" onclick="cancelEditPassword()">Cancel</button>
             </div>
         </div>
-        <div id="copy-toast" style="display: none;">Copied!</div>
     </div>
-    <script src="./script.js"></script>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <h1 class="main-title">
+            <span class="neon-text">Amo's Bunker</span>
+            <div class="neon-flicker"></div>
+        </h1>
+        
+        <!-- Edit Controls -->
+        <div class="edit-controls" id="editControls">
+            <h3 style="margin-bottom: 1rem;">Edit Mode Active</h3>
+            <div class="edit-form">
+                <input type="text" class="edit-input" id="newItemName" placeholder="Item Name">
+                <input type="text" class="edit-input" id="newItemImage" placeholder="Image URL">
+                <textarea class="edit-input" id="newItemDescription" placeholder="Description" rows="3"></textarea>
+                <input type="text" class="edit-input" id="newItemAccount" placeholder="Account/Username">
+                <input type="text" class="edit-input" id="newItemPassword" placeholder="Password">
+                <button class="edit-btn" onclick="addItem()">Add Item</button>
+                <button class="edit-btn save-btn" onclick="saveData()">Save Changes</button>
+                <button class="edit-btn exit-btn" onclick="toggleEditMode()">Exit Edit Mode</button>
+            </div>
+        </div>
+
+        <!-- Items Container -->
+        <div class="items-container" id="itemsContainer">
+            <!-- Items will be dynamically added here -->
+        </div>
+    </div>
+
+    <!-- Edit Mode Button -->
+    <button class="edit-mode-btn" onclick="enterEditMode()">-</button>
+
+    <!-- Item Detail Modal -->
+    <div class="overlay" id="overlay"></div>
+    <div class="item-detail-modal" id="itemDetailModal">
+        <button class="close-btn" onclick="closeItemDetail()">&times;</button>
+        <div id="itemDetailContent">
+            <!-- Item details will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Item Editor Modal -->
+    <div class="item-editor" id="itemEditor">
+        <button class="close-btn" onclick="closeItemEditor()">&times;</button>
+        <h3 style="margin-bottom: 1rem;">Edit Item</h3>
+        <div class="edit-form">
+            <input type="text" class="edit-input" id="editItemName" placeholder="Item Name">
+            <input type="text" class="edit-input" id="editItemImage" placeholder="Image URL">
+            <textarea class="edit-input" id="editItemDescription" placeholder="Description" rows="3"></textarea>
+            <input type="text" class="edit-input" id="editItemAccount" placeholder="Account/Username">
+            <input type="text" class="edit-input" id="editItemPassword" placeholder="Password">
+            <button class="edit-btn" onclick="updateItem()">Update Item</button>
+            <button class="edit-btn delete-btn" onclick="deleteItem()">Delete Item</button>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <script src="script.js"></script>
 </body>
 </html>
