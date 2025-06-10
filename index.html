@@ -7,6 +7,9 @@
     <title>Amo's Bunker</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
     <style>
+        html {
+            background-color: #000000;
+        }
         * {
             margin: 0;
             padding: 0;
@@ -313,6 +316,33 @@
             transform: translateY(0);
         }
 
+        .lightning-overlay {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.4),
+                transparent
+            );
+            transform: skewX(-25deg);
+            opacity: 0;
+            z-index: 1;
+            pointer-events: none;
+            animation: lightning-strike 11s linear infinite;
+        }
+
+        @keyframes lightning-strike {
+            0% { left: -100%; opacity: 0; }
+            90% { left: -100%; opacity: 0; }
+            90.1% { left: -100%; opacity: 1; }
+            93% { left: 200%; opacity: 0.3; }
+            100% { left: 200%; opacity: 0; }
+        }
+
         @media (max-width: 768px) {
             .neon-text {
                 font-size: 2.5rem;
@@ -359,6 +389,7 @@
     </style>
 </head>
 <body>
+    <div class="lightning-overlay"></div>
     <div class="vault-overlay" id="vault-overlay">
         <h1 class="vault-title">Vault</h1>
         <input type="password" class="vault-input" id="vault-code-input" placeholder="Enter Code">
