@@ -327,7 +327,7 @@ textarea {
     display: block;
 }
 
-@media (max-width: 605px) {
+@media (max-width: 600px) {
     #list-container, #page-content, #editor {
         width: 95%;
         margin: 1rem 0;
