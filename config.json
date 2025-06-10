@@ -2,18 +2,18 @@
     "vaultCode": "1312",
     "items": [
         {
-            "name": "Target Alpha",
+            "name": "Disney+",
             "imageUrl": "https://via.placeholder.com/300",
-            "description": "Primary access point for Alpha systems.",
-            "acc": "admin_alpha",
-            "pwd": "alpha_secure_123"
+            "description": "Disney+",
+            "acc": "acctest",
+            "pwd": "pwtest"
         },
         {
-            "name": "Target Beta",
+            "name": "Paramount+",
             "imageUrl": "https://via.placeholder.com/300",
-            "description": "Secondary access for Beta network.",
-            "acc": "user_beta",
-            "pwd": "beta_pass_456"
+            "description": "Paramount+",
+            "acc": "acctestt",
+            "pwd": "pwtestt"
         }
     ]
 }
