@@ -5,20 +5,25 @@ let currentPage = null;
 
 // Vault lock logic
 function submitVaultCode() {
-    const input = document.getElementById("vault-code-input").value.trim();
-    if (input === vaultCode) {
+    const input = document.getElementById("vault-code-input");
+    console.log("Vault code submitted:", input.value.trim());
+    if (input.value.trim() === vaultCode) {
+        console.log("Correct vault code, hiding overlay...");
         document.getElementById("vault-overlay").style.display = "none";
         document.getElementById("main-content").style.filter = "none";
         document.getElementById("list-container").style.display = "block";
         loadItems();
+        input.value = "";
     } else {
+        console.log("Incorrect vault code!");
         alert("Wrong Code, Boss!");
-        document.getElementById("vault-code-input").value = "";
+        input.value = "";
     }
 }
 
 document.getElementById("vault-code-input").addEventListener("keypress", (event) => {
     if (event.key === "Enter") {
+        console.log("Enter key pressed for vault code");
         submitVaultCode();
     }
 });
@@ -37,6 +42,7 @@ if (!editorAccess) {
             document.getElementById("editor").style.display = "block";
             loadItems();
         } else {
+            console.log("Incorrect editor password!");
             alert("Wrong Password, Boss!");
         }
     };
@@ -47,11 +53,13 @@ document.getElementById("list-container").style.display = "none";
 document.getElementById("page-content").style.display = "none";
 
 document.getElementById("back-btn").onclick = () => {
+    console.log("Back button clicked, returning to list...");
     document.getElementById("page-content").style.display = "none";
     document.getElementById("list-container").style.display = "block";
 };
 
 function loadItems() {
+    console.log("Loading items from LocalStorage...");
     const items = JSON.parse(localStorage.getItem("items") || "[]");
     const listContainer = document.getElementById("list-container");
     const itemList = document.getElementById("item-list");
@@ -74,13 +82,18 @@ function loadItems() {
             itemList.appendChild(editorLi);
         }
     });
+    console.log("Items loaded:", items);
 }
 
 function addItem() {
     const newItemInput = document.getElementById("new-item");
     const name = newItemInput.value.trim();
-    if (!name) return;
+    if (!name) {
+        console.log("No item name provided, ignoring...");
+        return;
+    }
     
+    console.log("Adding new item:", name);
     const items = JSON.parse(localStorage.getItem("items") || "[]");
     items.push({ name, imageUrl: "", text: "", acc: "", pw: "" });
     localStorage.setItem("items", JSON.stringify(items));
@@ -89,6 +102,7 @@ function addItem() {
 }
 
 function deleteItem(index) {
+    console.log("Deleting item at index:", index);
     const items = JSON.parse(localStorage.getItem("items") || "[]");
     items.splice(index, 1);
     localStorage.setItem("items", JSON.stringify(items));
@@ -96,6 +110,7 @@ function deleteItem(index) {
 }
 
 function saveList() {
+    console.log("Saving list and closing editor...");
     isEditorActive = false;
     document.getElementById("editor").style.display = "none";
     loadItems();
@@ -168,11 +183,11 @@ function editPage(index) {
 }
 
 function savePage() {
-    const items = JSON.parse(localStorage.getItem("items") || "[]");
     console.log("Saving page for index:", currentPage);
+    const items = JSON.parse(localStorage.getItem("items") || "[]");
     items[currentPage] = {
         name: items[currentPage].name,
-        imageUrl: document.getElementBy-JonesById("edit-image-url").value,
+        imageUrl: document.getElementById("edit-image-url").value,
         text: document.getElementById("edit-text").value,
         acc: document.getElementById("edit-acc").value,
         pw: document.getElementById("edit-pw").value
@@ -193,11 +208,9 @@ function showToast() {
     toast.classList.add("show");
     setTimeout(() => {
         console.log("Hiding toast...");
-        toast.classList.remove("hide");
+        toast.classList.remove("show");
         setTimeout(() => {
             toast.style.display = "none";
-            toast.classList.remove("hide");
         }, 300); // Wait for transition to complete
-    }, 2000); // Hides after 2 seconds
+    }, 2000);
 }
-</script>
