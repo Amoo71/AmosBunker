@@ -1,361 +1,551 @@
-body {
-    background: #0a0a2a;
-    color: #e0e0e0;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     overflow-x: hidden;
-    position: relative;
-    width: 100%;
+    background: linear-gradient(-45deg, #000000, #0d001a, #1a0033, #2d004d, #400066, #530080);
+    background-size: 400% 400%;
+    animation: gradientShift 8s ease-in-out infinite;
+    min-height: 100vh;
+    color: white;
 }
 
-body::before, body::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    pointer-events: none;
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
-body::before {
-    background: radial-gradient(circle at 30% 20%, rgba(194, 24, 91, 0.4), transparent 50%),
-                radial-gradient(circle at 70% 80%, rgba(123, 31, 162, 0.4), transparent 50%);
-    animation: smoky 12s ease-in-out infinite;
-    opacity: 0.6;
-}
-
-body::after {
-    background: radial-gradient(circle at 50% 50%, rgba(2, 136, 209, 0.3), transparent 60%),
-                radial-gradient(circle at 20% 70%, rgba(44, 0, 62, 0.3), transparent 60%);
-    animation: smoky-alt 15s ease-in-out infinite;
-    opacity: 0.5;
-}
-
-@keyframes smoky {
-    0% { transform: translate(0, 0) scale(1); opacity: 0.6; }
-    50% { transform: translate(8%, -8%) scale(1.05); opacity: 0.8; }
-    100% { transform: translate(0, 0) scale(1); opacity: 0.6; }
-}
-
-@keyframes smoky-alt {
-    0% { transform: translate(-5%, 5%) scale(1); opacity: 0.5; }
-    50% { transform: translate(5%, -5%) scale(1.05); opacity: 0.7; }
-    100% { transform: translate(-5%, 5%) scale(1); opacity: 0.5; }
-}
-
-h1 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 5vw;
-    font-weight: 700;
-    text-align: center;
-    margin: 2rem 0;
-    text-shadow: 
-        1px 1px 0 #c2185b, 2px 2px 0 #7b1fa2, 3px 3px 0 #0288d1,
-        0 0 10px rgba(194, 24, 91, 0.8), 0 0 15px rgba(123, 31, 162, 0.5);
-    background: linear-gradient(45deg, #c2185b, #7b1fa2, #0288d1);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    letter-spacing: 0.3rem;
-    animation: neon-flicker 3s infinite;
-}
-
-@media (max-width: 600px) {
-    h1 {
-        font-size: 8vw;
-        margin: 1.5rem 0;
-        letter-spacing: 0.15rem;
-        text-shadow: 
-            1px 1px 0 #c2185b, 1.5px 1.5px 0 #7b1fa2, 2px 2px 0 #0288d1,
-            0 0 8px rgba(194, 24, 91, 0.8), 0 0 12px rgba(123, 31, 162, 0.5);
-    }
-}
-
-@keyframes neon-flicker {
-    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-        opacity: 1;
-        text-shadow: 
-            1px 1px 0 #c2185b, 2px 2px 0 #7b1fa2, 3px 3px 0 #0288d1,
-            0 0 10px rgba(194, 24, 91, 0.8), 0 0 15px rgba(123, 31, 162, 0.5);
-    }
-    20%, 22%, 24%, 55% {
-        opacity: 0.3;
-        text-shadow: 
-            1px 1px 0 #c2185b, 2px 2px 0 #7b1fa2, 3px 3px 0 #0288d1,
-            0 0 5px rgba(194, 24, 91, 0.3), 0 0 8px rgba(123, 31, 162, 0.2);
-    }
-}
-
-#vault-overlay {
+.vault-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(10, 10, 42, 0.85);
+    background: rgba(0, 0, 0, 0.98);
+    backdrop-filter: blur(25px);
+    z-index: 1000;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
-    backdrop-filter: blur(5px);
-}
-
-#vault-lock {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 2.5rem;
-    border-radius: 16px;
-    text-align: center;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(15px);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: auto;
-    transition: transform 0.3s ease;
-}
-
-#vault-lock:hover {
-    transform: scale(1.02);
-}
-
-#vault-code-input {
-    width: 80%;
-    max-width: 220px;
-    padding: 0.8rem;
-    margin: 1rem 0;
-    border: none;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.08);
-    color: #e0e0e0;
-    font-size: 1.2rem;
-    text-align: center;
-    transition: box-shadow 0.3s ease;
-}
-
-#vault-code-input:focus {
-    box-shadow: 0 0 10px rgba(194, 24, 91, 0.5);
-    outline: none;
-}
-
-#vault-lock button {
-    background: linear-gradient(45deg, #c2185b, #7b1fa2);
-    color: #e0e0e0;
-    border: none;
-    padding: 0.8rem 1.8rem;
-    margin: 0.5rem;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.3s ease;
-}
-
-#vault-lock button:hover {
-    background: linear-gradient(45deg, #7b1fa2, #0288d1);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(194, 24, 91, 0.4);
-}
-
-#editor-access, #edit-page {
-    font-size: 1.5rem;
-    cursor: pointer;
-    background: rgba(255, 255, 255, 0.05);
-    padding: 0.6rem 0.9rem;
-    border-radius: 10px;
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
-    color: #c2185b;
-    box-shadow: 0 2px 10px rgba(194, 24, 91, 0.2);
-}
-
-#editor-access {
-    position: fixed;
-    bottom: 1.5rem;
-    right: 1.5rem;
-}
-
-#edit-page {
-    position: fixed;
-    bottom: 1.5rem;
-    right: 1.5rem;
-}
-
-#editor-access:hover, #edit-page:hover {
-    transform: scale(1.15);
-    box-shadow: 0 4px 15px rgba(194, 24, 91, 0.4);
-}
-
-#back-btn {
-    position: absolute;
-    top: 1.5rem;
-    left: 1.5rem;
-    background: linear-gradient(45deg, #c2185b, #7b1fa2);
-    color: #e0e0e0;
-    border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 1.5rem;
-    transition: all 0.3s ease;
-}
-
-#back-btn:hover {
-    background: linear-gradient(45deg, #7b1fa2, #0288d1);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(194, 24, 91, 0.4);
-}
-
-#list-container, #page-content, #editor {
-    width: 90%;
-    max-width: 700px;
-    margin: 1.5rem 0;
     transition: opacity 0.5s ease;
 }
 
-#page-content, #editor {
+.vault-title {
+    font-size: 4rem;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 2rem;
+    background: linear-gradient(45deg, #8000ff, #0080ff, #8000ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 50px rgba(128, 0, 255, 0.8);
+    animation: vaultGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes vaultGlow {
+    from { text-shadow: 0 0 20px rgba(128, 0, 255, 0.5); }
+    to { text-shadow: 0 0 50px rgba(128, 0, 255, 1); }
+}
+
+.vault-input {
     background: rgba(255, 255, 255, 0.05);
-    padding: 2rem;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(15px);
-    transition: transform 0.3s ease;
-}
-
-ul {
-    list-style: none;
-    padding: 0;
-}
-
-li {
-    padding: 1rem;
-    margin: 0.8rem 0;
-    background: linear-gradient(45deg, rgba(194, 24, 91, 0.2), rgba(123, 31, 162, 0.2));
-    border-radius: 12px;
-    cursor: pointer;
+    border: 2px solid rgba(128, 0, 255, 0.3);
+    border-radius: 15px;
+    padding: 15px 20px;
+    font-size: 1.2rem;
+    color: white;
+    backdrop-filter: blur(10px);
+    outline: none;
+    width: 300px;
+    text-align: center;
     transition: all 0.3s ease;
-    color: #e0e0e0;
-    font-weight: 500;
-    box-shadow: 0 2px 10px rgba(194, 24, 91, 0.2);
-    display: flex;
-    justify-content: space-between;
+}
+
+.vault-input:focus {
+    border-color: #8000ff;
+    box-shadow: 0 0 20px rgba(128, 0, 255, 0.5);
+}
+
+.vault-input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.edit-password-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(20px);
+    z-index: 1003;
+    display: none;
+    justify-content: center;
     align-items: center;
 }
 
-li:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 15px rgba(194, 24, 91, 0.4);
-    background: linear-gradient(45deg, rgba(194, 24, 91, 0.3), rgba(123, 31, 162, 0.3));
+.edit-password-overlay.active {
+    display: flex;
 }
 
-img {
-    max-width: 100%;
-    border-radius: 12px;
-    margin: 1.5rem 0;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-    transition: transform 0.3s ease;
+.edit-password-modal {
+    background: rgba(0, 0, 0, 0.9);
+    border: 2px solid rgba(128, 0, 255, 0.5);
+    border-radius: 20px;
+    padding: 2rem;
+    text-align: center;
+    backdrop-filter: blur(15px);
 }
 
-img:hover {
-    transform: scale(1.02);
+.edit-password-modal h3 {
+    margin-bottom: 1.5rem;
+    color: #8000ff;
+    font-size: 1.5rem;
 }
 
-button {
-    background: linear-gradient(45deg, #c2185b, #7b1fa2);
-    color: #e0e0e0;
+.modal-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    justify-content: center;
+}
+
+.modal-btn {
+    padding: 10px 20px;
     border: none;
-    padding: 0.8rem 1.8rem;
-    margin: 0.5rem;
     border-radius: 10px;
+    font-weight: bold;
     cursor: pointer;
-    font-weight: 500;
     transition: all 0.3s ease;
+    min-width: 80px;
 }
 
-button:hover {
-    background: linear-gradient(45deg, #7b1fa2, #0288d1);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(194, 24, 91, 0.4);
+.confirm-btn {
+    background: linear-gradient(45deg, #8000ff, #0080ff);
+    color: white;
 }
 
-input, textarea {
-    width: 100%;
-    padding: 0.8rem;
-    margin: 0.5rem 0;
-    border: none;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.08);
-    color: #e0e0e0;
-    font-family: 'Inter', sans-serif;
-    font-size: 1rem;
-    transition: box-shadow 0.3s ease;
+.cancel-btn {
+    background: linear-gradient(45deg, #ff4000, #ff8000);
+    color: white;
 }
 
-input:focus, textarea:focus {
-    box-shadow: 0 0 10px rgba(194, 24, 91, 0.5);
-    outline: none;
+.modal-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(128, 0, 255, 0.4);
 }
 
-textarea {
-    height: 9rem;
-    resize: vertical;
+.main-container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
 }
 
-#copy-toast {
-    position: fixed;
-    bottom: 5rem;
-    right: 1.5rem;
-    background: linear-gradient(45deg, #c2185b, #7b1fa2);
-    color: #e0e0e0;
-    padding: 0.8rem 1.5rem;
-    border-radius: 10px;
-    font-size: 1rem;
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    box-shadow: 0 4px 15px rgba(194, 24, 91, 0.4);
-    z-index: 1000;
+.main-title {
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+    perspective: 1000px;
+}
+
+.neon-text {
+    display: inline-block;
+    font-size: 4rem;
+    font-weight: 900;
+    color: #8000ff;
+    text-shadow: 
+        0 0 5px #8000ff,
+        0 0 10px #8000ff,
+        0 0 20px #8000ff,
+        0 0 40px #8000ff,
+        0 0 80px #8000ff;
+    transform: perspective(500px) rotateX(15deg) rotateY(-5deg);
+    animation: neonFlicker 6s infinite;
+    position: relative;
+    z-index: 2;
+}
+
+.neon-flicker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(128, 0, 255, 0.1) 50%, transparent 70%);
+    animation: flicker 8s infinite;
+    pointer-events: none;
+}
+
+@keyframes neonFlicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        text-shadow: 
+            0 0 5px #8000ff,
+            0 0 10px #8000ff,
+            0 0 20px #8000ff,
+            0 0 40px #8000ff,
+            0 0 80px #8000ff;
+    }
+    20%, 24%, 55% {
+        text-shadow: 
+            0 0 2px #8000ff,
+            0 0 5px #8000ff,
+            0 0 8px #8000ff,
+            0 0 12px #8000ff,
+            0 0 20px #8000ff;
+    }
+    22% {
+        text-shadow: 
+            0 0 1px #8000ff,
+            0 0 2px #8000ff,
+            0 0 3px #8000ff,
+            0 0 5px #8000ff,
+            0 0 8px #8000ff;
+    }
+}
+
+@keyframes flicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        opacity: 0.2;
+    }
+    20%, 24%, 55% {
+        opacity: 0.8;
+    }
+    22% {
+        opacity: 1;
+    }
+}
+
+.items-container {
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    margin-bottom: 2rem;
+}
+
+.item {
+    background: linear-gradient(135deg, rgba(128, 0, 255, 0.1), rgba(0, 128, 255, 0.1));
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    animation: itemGlow 4s ease-in-out infinite alternate;
+    position: relative;
+}
+
+@keyframes itemGlow {
+    0% { box-shadow: 0 0 10px rgba(128, 0, 255, 0.2); }
+    100% { box-shadow: 0 0 20px rgba(0, 128, 255, 0.3); }
+}
+
+.item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(128, 0, 255, 0.4);
+    background: linear-gradient(135deg, rgba(128, 0, 255, 0.2), rgba(0, 128, 255, 0.2));
+}
+
+.item-name {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #8000ff;
+    text-align: center;
+}
+
+.item-detail-modal {
     display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 2rem;
+    border: 2px solid rgba(128, 0, 255, 0.3);
+    z-index: 1002;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
 }
 
-#copy-toast.show {
-    opacity: 1;
-    transform: translateY(0);
+.item-detail-modal.active {
     display: block;
 }
 
-@media (max-width: 600px) {
-    #list-container, #page-content, #editor {
+.item-detail-image {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 15px;
+    margin-bottom: 1.5rem;
+}
+
+.item-detail-description {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.item-detail-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.copy-btn {
+    background: linear-gradient(45deg, #8000ff, #0080ff);
+    border: none;
+    border-radius: 10px;
+    padding: 12px 24px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 1;
+    min-width: 140px;
+}
+
+.copy-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(128, 0, 255, 0.4);
+}
+
+.edit-mode-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(45deg, #8000ff, #0080ff);
+    border: none;
+    border-radius: 50%;
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(128, 0, 255, 0.4);
+}
+
+.edit-mode-btn:hover {
+    transform: scale(1.1);
+}
+
+.edit-controls {
+    display: none;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.edit-controls.active {
+    display: block;
+}
+
+.edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.edit-input {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 12px;
+    color: white;
+    font-size: 1rem;
+}
+
+.edit-input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.edit-input:focus {
+    outline: none;
+    border-color: #8000ff;
+    box-shadow: 0 0 10px rgba(128, 0, 255, 0.3);
+}
+
+.edit-btn {
+    background: linear-gradient(45deg, #8000ff, #0080ff);
+    border: none;
+    border-radius: 10px;
+    padding: 12px 24px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.edit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(128, 0, 255, 0.4);
+}
+
+.save-btn {
+    background: linear-gradient(45deg, #00ff80, #0080ff) !important;
+}
+
+.exit-btn {
+    background: linear-gradient(45deg, #ff4000, #ff8000) !important;
+}
+
+.delete-btn {
+    background: linear-gradient(45deg, #ff4000, #ff8000) !important;
+}
+
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(45deg, #00ff80, #0080ff);
+    color: black;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-weight: bold;
+    z-index: 1004;
+    opacity: 0;
+    transform: translateY(-50px);
+    transition: all 0.3s ease;
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.item-editor {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 2rem;
+    border: 2px solid rgba(128, 0, 255, 0.3);
+    z-index: 1002;
+    width: 90%;
+    max-width: 500px;
+}
+
+.item-editor.active {
+    display: block;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1001;
+}
+
+.overlay.active {
+    display: block;
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .neon-text {
+        font-size: 2.5rem;
+    }
+
+    .vault-title {
+        font-size: 2.5rem;
+    }
+
+    .vault-input {
+        width: 90%;
+        max-width: 300px;
+    }
+
+    .main-container {
+        padding: 1rem;
+    }
+
+    .items-container {
+        padding: 1rem;
+    }
+
+    .item-detail-buttons {
+        flex-direction: column;
+    }
+
+    .copy-btn {
+        min-width: auto;
+    }
+
+    .item-detail-modal, .item-editor {
         width: 95%;
-        margin: 1rem 0;
-    }
-    button, input, textarea {
-        padding: 0.6rem;
-        font-size: 0.95rem;
-    }
-    img {
-        max-width: 100%;
-    }
-    #vault-lock {
         padding: 1.5rem;
     }
-    #vault-code-input {
-        width: 90%;
-        font-size: 1.1rem;
+
+    .edit-controls {
+        padding: 1rem;
     }
-    #editor-access, #edit-page {
-        padding: 0.5rem 0.8rem;
+
+    .modal-buttons {
+        flex-direction: column;
+        gap: 0.5rem;
     }
-    #back-btn {
-        padding: 0.5rem 1rem;
+}
+
+@media (max-width: 480px) {
+    .neon-text {
+        font-size: 2rem;
     }
-    #copy-toast {
-        bottom: 4rem;
-        right: 1rem;
-        padding: 0.6rem 1.2rem;
-        font-size: 0.95rem;
+
+    .vault-title {
+        font-size: 2rem;
+    }
+
+    .item {
+        padding: 1rem;
+    }
+
+    .item-detail-image {
+        max-height: 200px;
     }
 }
