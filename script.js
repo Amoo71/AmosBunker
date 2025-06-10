@@ -116,7 +116,7 @@ function showPage(index) {
     
     copyAccBtn.onclick = () => {
         console.log("Copy Acc clicked, copying:", item.acc || "");
-        if (item.acc) {
+        if (item.acc && item.acc.trim()) {
             navigator.clipboard.writeText(item.acc).then(() => {
                 showToast();
             }).catch(err => {
@@ -124,13 +124,13 @@ function showPage(index) {
                 alert("Copy failed!");
             });
         } else {
-            alert("No account value to copy!");
+            alert("No Item to copy!");
         }
     };
     
     copyPwBtn.onclick = () => {
         console.log("Copy Pw clicked, copying:", item.pw || "");
-        if (item.pw) {
+        if (item.pw && item.pw.trim()) {
             navigator.clipboard.writeText(item.pw).then(() => {
                 showToast();
             }).catch(err => {
@@ -138,7 +138,7 @@ function showPage(index) {
                 alert("Copy failed!");
             });
         } else {
-            alert("No password value to copy!");
+            alert("No Item to copy!");
         }
     };
     
@@ -181,6 +181,7 @@ function savePage() {
 function showToast() {
     console.log("Showing toast...");
     const toast = document.getElementById("copy-toast");
+    toast.textContent = "Copied!";
     toast.style.display = "block";
     toast.classList.add("show");
     setTimeout(() => {
