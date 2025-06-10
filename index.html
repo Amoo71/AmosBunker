@@ -9,6 +9,11 @@
     <style>
         html {
             background-color: #000000;
+            background: linear-gradient(-45deg, #000000, #120012, #0f0019, #0a0013, #05000a, #000000);
+            background-size: 600% 600%;
+            animation: gradientShift 12s ease-in-out infinite;
+            min-height: 100%;
+            overflow-x: hidden;
         }
         * {
             margin: 0;
@@ -18,11 +23,6 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            overflow-x: hidden;
-            background-color: #000000;
-            background: linear-gradient(-45deg, #000000, #120012, #0f0019, #0a0013, #05000a, #000000);
-            background-size: 600% 600%;
-            animation: gradientShift 12s ease-in-out infinite;
             min-height: 100vh;
             color: white;
         }
@@ -316,31 +316,32 @@
             transform: translateY(0);
         }
 
-        .lightning-overlay {
+        #lightning-container {
             position: fixed;
             top: 0;
-            left: -100%;
+            left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.4),
-                transparent
-            );
-            transform: skewX(-25deg);
-            opacity: 0;
-            z-index: 1;
             pointer-events: none;
-            animation: lightning-strike 11s linear infinite;
+            z-index: 100;
         }
 
-        @keyframes lightning-strike {
-            0% { left: -100%; opacity: 0; }
-            90% { left: -100%; opacity: 0; }
-            90.1% { left: -100%; opacity: 1; }
-            93% { left: 200%; opacity: 0.3; }
-            100% { left: 200%; opacity: 0; }
+        #lightning-container svg {
+            position: absolute;
+            opacity: 0;
+            height: 100vh;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6)) drop-shadow(0 0 15px #fff);
+        }
+
+        #lightning-container svg.strike {
+            animation: strike-anim 0.4s ease-out forwards;
+        }
+
+        @keyframes strike-anim {
+            0% { opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { opacity: 0; }
         }
 
         @media (max-width: 768px) {
@@ -389,7 +390,11 @@
     </style>
 </head>
 <body>
-    <div class="lightning-overlay"></div>
+    <div id="lightning-container">
+        <svg viewBox="0 0 20 128">
+            <path d="M10 0 L0 50 L8 55 L0 90 L10 70 L14 80 L20 40 L12 45 L20 0 Z" fill="rgba(255, 255, 255, 0.9)"/>
+        </svg>
+    </div>
     <div class="vault-overlay" id="vault-overlay">
         <h1 class="vault-title">Vault</h1>
         <input type="password" class="vault-input" id="vault-code-input" placeholder="Enter Code">
@@ -585,6 +590,29 @@
 
         // Initial load
         loadItems();
+
+        // Lightning effect
+        const lightningContainer = document.getElementById('lightning-container');
+        const lightningBolt = lightningContainer.querySelector('svg');
+
+        function triggerLightning() {
+            if (lightningBolt.classList.contains('strike')) {
+                return;
+            }
+
+            const boltWidth = 50 + Math.random() * 50;
+            lightningBolt.style.width = `${boltWidth}px`;
+            lightningBolt.style.top = `0px`;
+            lightningBolt.style.left = `${Math.random() * (window.innerWidth - boltWidth)}px`;
+            
+            lightningBolt.classList.add('strike');
+            
+            setTimeout(() => {
+                lightningBolt.classList.remove('strike');
+            }, 500);
+        }
+
+        setInterval(triggerLightning, 7000 + Math.random() * 8000);
     </script>
 </body>
 </html>
