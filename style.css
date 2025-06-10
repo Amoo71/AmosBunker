@@ -9,6 +9,7 @@ body {
     margin: 0;
     overflow-x: hidden;
     position: relative;
+    width: 100%;
 }
 
 body::before, body::after {
@@ -61,7 +62,7 @@ h1 {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     letter-spacing: 0.3rem;
-    animation: pulse 3s ease-in-out infinite;
+    animation: neon-flicker 3s infinite;
 }
 
 @media (max-width: 600px) {
@@ -75,16 +76,19 @@ h1 {
     }
 }
 
-@keyframes pulse {
-    0% { text-shadow: 
-        1px 1px 0 #c2185b, 2px 2px 0 #7b1fa2, 3px 3px 0 #0288d1,
-        0 0 10px rgba(194, 24, 91, 0.8), 0 0 15px rgba(123, 31, 162, 0.5); }
-    50% { text-shadow: 
-        1px 1px 0 #c2185b, 2px 2px 0 #7b1fa2, 3px 3px 0 #0288d1,
-        0 0 15px rgba(194, 24, 91, 1), 0 0 20px rgba(123, 31, 162, 0.7); }
-    100% { text-shadow: 
-        1px 1px 0 #c2185b, 2px 2px 0 #7b1fa2, 3px 3px 0 #0288d1,
-        0 0 10px rgba(194, 24, 91, 0.8), 0 0 15px rgba(123, 31, 162, 0.5); }
+@keyframes neon-flicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        opacity: 1;
+        text-shadow: 
+            1px 1px 0 #c2185b, 2px 2px 0 #7b1fa2, 3px 3px 0 #0288d1,
+            0 0 10px rgba(194, 24, 91, 0.8), 0 0 15px rgba(123, 31, 162, 0.5);
+    }
+    20%, 22%, 24%, 55% {
+        opacity: 0.3;
+        text-shadow: 
+            1px 1px 0 #c2185b, 2px 2px 0 #7b1fa2, 3px 3px 0 #0288d1,
+            0 0 5px rgba(194, 24, 91, 0.3), 0 0 8px rgba(123, 31, 162, 0.2);
+    }
 }
 
 #vault-overlay {
@@ -195,13 +199,12 @@ h1 {
     padding: 0.6rem 1.2rem;
     border-radius: 10px;
     cursor: pointer;
-    font-size: 200px;
     font-size: 1.5rem;
     transition: all 0.3s ease;
 }
 
 #back-btn:hover {
-    background: linear-gradient(45deg, #7b1fa2 , #0288d1);
+    background: linear-gradient(45deg, #7b1fa2, #0288d1);
     transform: translateY(-2px);
     box-shadow: 0 4px 15px rgba(194, 24, 91, 0.4);
 }
@@ -213,16 +216,7 @@ h1 {
     transition: opacity 0.5s ease;
 }
 
-#page-content {
-    background: 0 4px 20px rgba(255, 255, 255, 0.05);
-    padding: 2rem;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(15px);
-    transition: transform 0.3s ease;
-}
-
-#editor {
+#page-content, #editor {
     background: rgba(255, 255, 255, 0.05);
     padding: 2rem;
     border-radius: 16px;
@@ -323,14 +317,17 @@ textarea {
     transform: translateY(10px);
     transition: opacity 0.3s ease, transform 0.3s ease;
     box-shadow: 0 4px 15px rgba(194, 24, 91, 0.4);
+    z-index: 1000;
+    display: none;
 }
 
 #copy-toast.show {
     opacity: 1;
     transform: translateY(0);
+    display: block;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 605px) {
     #list-container, #page-content, #editor {
         width: 95%;
         margin: 1rem 0;
