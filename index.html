@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#000000">
     <title>Amo's Bunker</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
     <style>
@@ -15,6 +16,7 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             overflow-x: hidden;
+            background-color: #000000;
             background: linear-gradient(-45deg, #000000, #120012, #0f0019, #0a0013, #05000a, #000000);
             background-size: 600% 600%;
             animation: gradientShift 12s ease-in-out infinite;
@@ -440,11 +442,50 @@
             handleCode(event.target.value);
         });
 
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.position = "fixed";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    console.log('Fallback: Text copied to clipboard successfully!');
+                    showNotification();
+                } else {
+                    console.error('Fallback: Copying text command was unsuccessful');
+                    alert('Copy failed! Please copy manually.');
+                }
+            } catch (err) {
+                console.error('Fallback: Oops, unable to copy', err);
+                alert('Copy failed! Please copy manually.');
+            }
+            document.body.removeChild(textArea);
+        }
+
+        function copyToClipboard(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(() => {
+                    console.log('Text copied to clipboard successfully!');
+                    showNotification();
+                }).catch(err => {
+                    console.error('Could not copy text using navigator.clipboard: ', err);
+                    fallbackCopyTextToClipboard(text);
+                });
+            } else {
+                fallbackCopyTextToClipboard(text);
+            }
+        }
+
         // Load config.json and items
         async function loadItems() {
             console.log('Loading config.json...');
             try {
-                const response = await fetch('./config.json');
+                const response = await fetch('./config.json?v=' + new Date().getTime());
                 if (!response.ok) throw new Error('Failed to load config.json');
                 configData = await response.json();
                 console.log('Config loaded:', configData);
@@ -476,13 +517,7 @@
             copyAccBtn.onclick = () => {
                 console.log('Copy Acc clicked, attempting to copy:', item.acc || '');
                 if (item.acc && item.acc.trim()) {
-                    navigator.clipboard.writeText(item.acc.trim()).then(() => {
-                        console.log('Account copied successfully!');
-                        showNotification();
-                    }).catch(err => {
-                        console.error('Failed to copy account:', err);
-                        alert('Copy failed! Check console.');
-                    });
+                    copyToClipboard(item.acc.trim());
                 } else {
                     console.log('No account value to copy!');
                     alert('Nothing to copy!');
@@ -492,13 +527,7 @@
             copyPwBtn.onclick = () => {
                 console.log('Copy Pw clicked, attempting to copy:', item.pwd || '');
                 if (item.pwd && item.pwd.trim()) {
-                    navigator.clipboard.writeText(item.pwd.trim()).then(() => {
-                        console.log('Password copied successfully!');
-                        showNotification();
-                    }).catch(err => {
-                        console.error('Failed to copy password:', err);
-                        alert('Copy failed! Check console.');
-                    });
+                    copyToClipboard(item.pwd.trim());
                 } else {
                     console.log('No password value to copy!');
                     alert('Nothing to copy!');
