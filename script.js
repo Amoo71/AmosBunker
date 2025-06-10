@@ -28,7 +28,7 @@ const editorAccess = document.getElementById("editor-access");
 if (!editorAccess) {
     console.error("Editor access button not found!");
 } else {
-    editorAccess.addEventListener("click", () => {
+    editorAccess.onclick = () => {
         console.log("Editor access clicked!");
         const input = prompt("Enter Password:");
         if (input === password) {
@@ -39,7 +39,7 @@ if (!editorAccess) {
         } else {
             alert("Wrong Password, Boss!");
         }
-    });
+    };
 }
 
 // Initial load (vault overlay shown, content blurred)
@@ -105,6 +105,7 @@ function showPage(index) {
     currentPage = index;
     const items = JSON.parse(localStorage.getItem("items") || "[]");
     const item = items[index];
+    console.log("Showing page for index:", index, "Item:", item);
     document.getElementById("list-container").style.display = "none";
     document.getElementById("page-content").style.display = "block";
     document.getElementById("page-image").src = item.imageUrl || "https://via.placeholder.com/300";
@@ -115,29 +116,33 @@ function showPage(index) {
     const copyPwBtn = document.getElementById("copy-pw");
     
     copyAccBtn.onclick = () => {
-        console.log("Copy Acc clicked, copying:", item.acc || "");
+        console.log("Copy Acc clicked, attempting to copy:", item.acc || "");
         if (item.acc && item.acc.trim()) {
-            navigator.clipboard.writeText(item.acc).then(() => {
+            navigator.clipboard.writeText(item.acc.trim()).then(() => {
+                console.log("Account copied successfully!");
                 showToast();
             }).catch(err => {
                 console.error("Failed to copy account:", err);
-                alert("Copy failed!");
+                alert("Copy failed! Check console for details.");
             });
         } else {
+            console.log("No account value available to copy!");
             alert("No Item to copy!");
         }
     };
     
     copyPwBtn.onclick = () => {
-        console.log("Copy Pw clicked, copying:", item.pw || "");
+        console.log("Copy Pw clicked, attempting to copy:", item.pw || "");
         if (item.pw && item.pw.trim()) {
-            navigator.clipboard.writeText(item.pw).then(() => {
+            navigator.clipboard.writeText(item.pw.trim()).then(() => {
+                console.log("Password copied successfully!");
                 showToast();
             }).catch(err => {
                 console.error("Failed to copy password:", err);
-                alert("Copy failed!");
+                alert("Copy failed! Check console for details.");
             });
         } else {
+            console.log("No password value available to copy!");
             alert("No Item to copy!");
         }
     };
@@ -153,6 +158,7 @@ function showPage(index) {
 function editPage(index) {
     const items = JSON.parse(localStorage.getItem("items") || "[]");
     const item = items[index];
+    console.log("Editing page for index:", index, "Item:", item);
     document.getElementById("page-content").style.display = "none";
     document.getElementById("page-editor").style.display = "block";
     document.getElementById("edit-image-url").value = item.imageUrl || "";
@@ -163,9 +169,10 @@ function editPage(index) {
 
 function savePage() {
     const items = JSON.parse(localStorage.getItem("items") || "[]");
+    console.log("Saving page for index:", currentPage);
     items[currentPage] = {
         name: items[currentPage].name,
-        imageUrl: document.getElementById("edit-image-url").value,
+        imageUrl: document.getElementBy-JonesById("edit-image-url").value,
         text: document.getElementById("edit-text").value,
         acc: document.getElementById("edit-acc").value,
         pw: document.getElementById("edit-pw").value
@@ -179,14 +186,18 @@ function savePage() {
 }
 
 function showToast() {
-    console.log("Showing toast...");
+    console.log("Showing toast with message: Copied!");
     const toast = document.getElementById("copy-toast");
     toast.textContent = "Copied!";
     toast.style.display = "block";
     toast.classList.add("show");
     setTimeout(() => {
         console.log("Hiding toast...");
-        toast.classList.remove("show");
-        toast.style.display = "none";
-    }, 2000);
+        toast.classList.remove("hide");
+        setTimeout(() => {
+            toast.style.display = "none";
+            toast.classList.remove("hide");
+        }, 300); // Wait for transition to complete
+    }, 2000); // Hides after 2 seconds
 }
+</script>
