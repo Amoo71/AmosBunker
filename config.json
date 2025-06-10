@@ -10,10 +10,10 @@
         },
         {
             "name": "Paramount+",
-            "imageUrl": "https://via.placeholder.com/300",
+            "imageUrl": "https://nofilmschool.com/media-library/og-meta.png?id=34060995&width=1245&height=700&quality=90&coordinates=40%2C0%2C40%2C0",
             "description": "Paramount+",
-            "acc": "acctestt",
-            "pwd": "pwtestt"
+            "acc": "pauloalexandre7digitos@gmail.com",
+            "pwd": "Alexandre10"
         },
         {
             "name": "Sky Showtime",
@@ -21,6 +21,20 @@
             "description": "Sky Showtime Premium",
             "acc": "antono.gh@hotmail.com",
             "pwd": "Marta@ivan10"
+        },
+        {
+            "name": "Crunchyroll",
+            "imageUrl": "https://i.pinimg.com/564x/bb/e2/17/bbe217f95ca80dcdb50588ba7aef0596.jpg",
+            "description": "Crunchyroll Megafan",
+            "acc": "itro.alarcon@gmail.com",
+            "pwd": "Arielglee1234."
+        },
+        {
+            "name": "Apple TV & Music",
+            "imageUrl": "https://i.pinimg.com/736x/65/4c/30/654c301aaee0538436a455a214c9486d.jpg",
+            "description": "Apple TV+ & Apple Music",
+            "acc": "heepstealer1@yahoo.com",
+            "pwd": "Maegor2.patched.to"
         }
     ]
 }
