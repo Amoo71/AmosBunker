@@ -1,88 +1,546 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Amo's Bunker</title>
-    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            overflow-x: hidden;
+            background: linear-gradient(-45deg, #000000, #0d001a, #1a0033, #2d004d, #400066, #530080);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease-in-out infinite;
+            min-height: 100vh;
+            color: white;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .vault-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.98);
+            backdrop-filter: blur(25px);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease;
+        }
+
+        .vault-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, #8000ff, #0080ff, #8000ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 50px rgba(128, 0, 255, 0.8);
+            animation: vaultGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes vaultGlow {
+            from { text-shadow: 0 0 20px rgba(128, 0, 255, 0.5); }
+            to { text-shadow: 0 0 50px rgba(128, 0, 255, 1); }
+        }
+
+        .vault-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(128, 0, 255, 0.3);
+            border-radius: 15px;
+            padding: 15px 20px;
+            font-size: 1.2rem;
+            color: white;
+            backdrop-filter: blur(10px);
+            outline: none;
+            width: 300px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .vault-input:focus {
+            border-color: #8000ff;
+            box-shadow: 0 0 20px rgba(128, 0, 255, 0.5);
+        }
+
+        .vault-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .vault-button {
+            background: linear-gradient(45deg, #8000ff, #0080ff);
+            border: none;
+            border-radius: 10px;
+            padding: 12px 24px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .vault-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(128, 0, 255, 0.4);
+        }
+
+        .main-container {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .main-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            perspective: 1000px;
+        }
+
+        .neon-text {
+            font-family: 'Orbitron', sans-serif;
+            display: inline-block;
+            font-size: 4rem;
+            font-weight: 900;
+            color: #1a0033;
+            text-shadow: 
+                0 0 5px #8000ff,
+                0 0 10px #8000ff,
+                0 0 20px #8000ff,
+                0 0 40px #8000ff,
+                0 0 80px #8000ff;
+            transform: perspective(500px) rotateX(15deg);
+            animation: neonFlicker 6s infinite, neonRotate 8s ease-in-out infinite;
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes neonFlicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                text-shadow: 
+                    0 0 5px #8000ff,
+                    0 0 10px #8000ff,
+                    0 0 20px #8000ff,
+                    0 0 40px #8000ff,
+                    0 0 80px #8000ff;
+            }
+            20%, 24%, 55% {
+                text-shadow: 
+                    0 0 2px #8000ff,
+                    0 0 5px #8000ff,
+                    0 0 8px #8000ff,
+                    0 0 12px #8000ff,
+                    0 0 20px #8000ff;
+            }
+            22% {
+                text-shadow: 
+                    0 0 1px #8000ff,
+                    0 0 2px #8000ff,
+                    0 0 3px #8000ff,
+                    0 0 5px #8000ff,
+                    0 0 8px #8000ff;
+            }
+        }
+
+        @keyframes neonRotate {
+            0% { transform: perspective(500px) rotateX(15deg) rotateY(-5deg); }
+            50% { transform: perspective(500px) rotateX(15deg) rotateY(5deg); }
+            100% { transform: perspective(500px) rotateX(15deg) rotateY(-5deg); }
+        }
+
+        .neon-flicker {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(128, 0, 255, 0.1) 50%, transparent 70%);
+            animation: flicker 8s infinite;
+            pointer-events: none;
+        }
+
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 0.2; }
+            20%, 24%, 55% { opacity: 0.8; }
+            22% { opacity: 1; }
+        }
+
+        .items-container {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .item {
+            background: linear-gradient(135deg, rgba(128, 0, 255, 0.1), rgba(0, 128, 255, 0.1));
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            animation: itemGlow 4s ease-in-out infinite alternate;
+            position: relative;
+        }
+
+        @keyframes itemGlow {
+            0% { box-shadow: 0 0 10px rgba(128, 0, 255, 0.2); }
+            100% { box-shadow: 0 0 20px rgba(0, 128, 255, 0.3); }
+        }
+
+        .item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(128, 0, 255, 0.4);
+            background: linear-gradient(135deg, rgba(128, 0, 255, 0.2), rgba(0, 128, 255, 0.2));
+        }
+
+        .item-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #8000ff;
+            text-align: center;
+        }
+
+        .item-detail-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 2px solid rgba(128, 0, 255, 0.3);
+            z-index: 1002;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .item-detail-modal.active {
+            display: block;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1001;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .item-detail-image {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+        }
+
+        .item-detail-description {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .item-detail-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .copy-btn {
+            background: linear-gradient(45deg, #8000ff, #0080ff);
+            border: none;
+            border-radius: 10px;
+            padding: 12px 24px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .copy-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(128, 0, 255, 0.4);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #00ff80, #0080ff);
+            color: black;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-weight: bold;
+            z-index: 1004;
+            opacity: 0;
+            transform: translateY(-50px);
+            transition: all 0.3s ease;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .neon-text {
+                font-size: 2.5rem;
+            }
+            .vault-title {
+                font-size: 2.5rem;
+            }
+            .vault-input {
+                width: 90%;
+                max-width: 300px;
+            }
+            .main-container {
+                padding: 1rem;
+            }
+            .items-container {
+                padding: 1rem;
+            }
+            .item-detail-buttons {
+                flex-direction: column;
+            }
+            .copy-btn {
+                min-width: auto;
+            }
+            .item-detail-modal {
+                width: 95%;
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .neon-text {
+                font-size: 2rem;
+            }
+            .vault-title {
+                font-size: 2rem;
+            }
+            .item {
+                padding: 1rem;
+            }
+            .item-detail-image {
+                max-height: 200px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Vault Entry Overlay -->
-    <div class="vault-overlay" id="vaultOverlay">
-        <h1 class="vault-title">VAULT</h1>
-        <input type="password" class="vault-input" id="vaultPassword" placeholder="Enter Password" maxlength="4">
+    <div class="vault-overlay" id="vault-overlay">
+        <h1 class="vault-title">Vault</h1>
+        <input type="password" class="vault-input" id="vault-code-input" placeholder="Enter Code">
+        <button class="vault-button" onclick="submitVaultCode()">Confirm</button>
     </div>
-
-    <!-- Edit Mode Password Modal -->
-    <div class="edit-password-overlay" id="editPasswordOverlay">
-        <div class="edit-password-modal">
-            <h3>Enter Edit Password</h3>
-            <input type="password" class="vault-input" id="editPassword" placeholder="Password" maxlength="6">
-            <div class="modal-buttons">
-                <button class="modal-btn confirm-btn" onclick="confirmEditPassword()">Enter</button>
-                <button class="modal-btn cancel-btn" onclick="cancelEditPassword()">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Content -->
-    <div class="main-container">
-        <h1 class="main-title">
+    <div class="overlay" id="modal-overlay"></div>
+    <div class="main-container" id="main-container" style="display: none;">
+        <div class="main-title">
             <span class="neon-text">Amo's Bunker</span>
             <div class="neon-flicker"></div>
-        </h1>
-        
-        <!-- Edit Controls -->
-        <div class="edit-controls" id="editControls">
-            <h3 style="margin-bottom: 1rem;">Edit Mode Active</h3>
-            <div class="edit-form">
-                <input type="text" class="edit-input" id="newItemName" placeholder="Item Name">
-                <input type="text" class="edit-input" id="newItemImage" placeholder="Image URL">
-                <textarea class="edit-input" id="newItemDescription" placeholder="Description" rows="3"></textarea>
-                <input type="text" class="edit-input" id="newItemAccount" placeholder="Account/Username">
-                <input type="text" class="edit-input" id="newItemPassword" placeholder="Password">
-                <button class="edit-btn" onclick="addItem()">Add Item</button>
-                <button class="edit-btn save-btn" onclick="saveData()">Save Changes</button>
-                <button class="edit-btn exit-btn" onclick="toggleEditMode()">Exit Edit Mode</button>
+        </div>
+        <div class="items-container" id="items-container"></div>
+        <div class="item-detail-modal" id="item-detail-modal">
+            <button class="close-btn" onclick="closeModal()">×</button>
+            <img class="item-detail-image" id="item-detail-image" src="" alt="Item Image">
+            <p class="item-detail-description" id="item-detail-description"></p>
+            <div class="item-detail-buttons">
+                <button class="copy-btn" id="copy-acc-btn">Copy Acc</button>
+                <button class="copy-btn" id="copy-pw-btn">Copy Pw</button>
             </div>
         </div>
-
-        <!-- Items Container -->
-        <div class="items-container" id="itemsContainer">
-            <!-- Items will be dynamically added here -->
-        </div>
+        <div class="notification" id="notification">Copied!</div>
     </div>
+    <script>
+        const vaultOverlay = document.getElementById('vault-overlay');
+        const mainContainer = document.getElementById('main-container');
+        const itemsContainer = document.getElementById('items-container');
+        const modalOverlay = document.getElementById('modal-overlay');
+        const itemDetailModal = document.getElementById('item-detail-modal');
+        const itemDetailImage = document.getElementById('item-detail-image');
+        const itemDetailDescription = document.getElementById('item-detail-description');
+        const copyAccBtn = document.getElementById('copy-acc-btn');
+        const copyPwBtn = document.getElementById('copy-pw-btn');
+        const notification = document.getElementById('notification');
+        let configData = null;
 
-    <!-- Edit Mode Button -->
-    <button class="edit-mode-btn" onclick="enterEditMode()">-</button>
+        // Check if vault is already unlocked
+        if (localStorage.getItem('vaultUnlocked') === 'true') {
+            vaultOverlay.style.display = 'none';
+            mainContainer.style.display = 'block';
+            loadItems();
+        }
 
-    <!-- Item Detail Modal -->
-    <div class="overlay" id="overlay"></div>
-    <div class="item-detail-modal" id="itemDetailModal">
-        <button class="close-btn" onclick="closeItemDetail()">&times;</button>
-        <div id="itemDetailContent">
-            <!-- Item details will be loaded here -->
-        </div>
-    </div>
+        // Submit vault code
+        function submitVaultCode() {
+            const input = document.getElementById('vault-code-input');
+            console.log('Vault code submitted:', input.value.trim());
+            if (input.value.trim() === configData?.vaultCode || input.value.trim() === '1312') {
+                console.log('Correct vault code, hiding overlay...');
+                vaultOverlay.style.display = 'none';
+                mainContainer.style.display = 'block';
+                localStorage.setItem('vaultUnlocked', 'true');
+                loadItems();
+                input.value = '';
+            } else {
+                console.log('Incorrect vault code!');
+                alert('Wrong Code, Boss!');
+                input.value = '';
+            }
+        }
 
-    <!-- Item Editor Modal -->
-    <div class="item-editor" id="itemEditor">
-        <button class="close-btn" onclick="closeItemEditor()">&times;</button>
-        <h3 style="margin-bottom: 1rem;">Edit Item</h3>
-        <div class="edit-form">
-            <input type="text" class="edit-input" id="editItemName" placeholder="Item Name">
-            <input type="text" class="edit-input" id="editItemImage" placeholder="Image URL">
-            <textarea class="edit-input" id="editItemDescription" placeholder="Description" rows="3"></textarea>
-            <input type="text" class="edit-input" id="editItemAccount" placeholder="Account/Username">
-            <input type="text" class="edit-input" id="editItemPassword" placeholder="Password">
-            <button class="edit-btn" onclick="updateItem()">Update Item</button>
-            <button class="edit-btn delete-btn" onclick="deleteItem()">Delete Item</button>
-        </div>
-    </div>
+        // Handle Enter key for vault input
+        document.getElementById('vault-code-input').addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                console.log('Enter key pressed for vault code');
+                submitVaultCode();
+            }
+        });
 
-    <!-- Notification -->
-    <div class="notification" id="notification"></div>
+        // Load config.json and items
+        async function loadItems() {
+            console.log('Loading config.json...');
+            try {
+                const response = await fetch('./config.json');
+                if (!response.ok) throw new Error('Failed to load config.json');
+                configData = await response.json();
+                console.log('Config loaded:', configData);
+                itemsContainer.innerHTML = '';
+                configData.items.forEach((item, index) => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'item';
+                    itemDiv.innerHTML = `<div class="item-name">${item.name}</div>`;
+                    itemDiv.onclick = () => showItemDetails(index);
+                    itemsContainer.appendChild(itemDiv);
+                });
+            } catch (error) {
+                console.error('Error loading config:', error);
+                itemsContainer.innerHTML = '<p>Error loading items. Check config.json.</p>';
+                // Fallback items
+                configData = { vaultCode: '1312', items: [] };
+            }
+        }
 
-    <script src="script.js"></script>
+        // Show item details in modal
+        function showItemDetails(index) {
+            const item = configData.items[index];
+            console.log('Showing item details for index:', index, 'Item:', item);
+            itemDetailImage.src = item.imageUrl || 'https://via.placeholder.com/300';
+            itemDetailDescription.textContent = item.description || '';
+            modalOverlay.className = 'overlay active';
+            itemDetailModal.className = 'item-detail-modal active';
+
+            copyAccBtn.onclick = () => {
+                console.log('Copy Acc clicked, attempting to copy:', item.acc || '');
+                if (item.acc && item.acc.trim()) {
+                    navigator.clipboard.writeText(item.acc.trim()).then(() => {
+                        console.log('Account copied successfully!');
+                        showNotification();
+                    }).catch(err => {
+                        console.error('Failed to copy account:', err);
+                        alert('Copy failed! Check console.');
+                    });
+                } else {
+                    console.log('No account value to copy!');
+                    alert('Nothing to copy!');
+                }
+            };
+
+            copyPwBtn.onclick = () => {
+                console.log('Copy Pw clicked, attempting to copy:', item.pwd || '');
+                if (item.pwd && item.pwd.trim()) {
+                    navigator.clipboard.writeText(item.pwd.trim()).then(() => {
+                        console.log('Password copied successfully!');
+                        showNotification();
+                    }).catch(err => {
+                        console.error('Failed to copy password:', err);
+                        alert('Copy failed! Check console.');
+                    });
+                } else {
+                    console.log('No password value to copy!');
+                    alert('Nothing to copy!');
+                }
+            };
+        }
+
+        // Close modal
+        function closeModal() {
+            console.log('Closing modal...');
+            modalOverlay.className = 'overlay';
+            itemDetailModal.className = 'item-detail-modal';
+        }
+
+        // Show notification
+        function showNotification() {
+            console.log('Showing notification: Copied!');
+            notification.className = 'notification show';
+            setTimeout(() => {
+                console.log('Hiding notification...');
+                notification.className = 'notification';
+            }, 2000);
+        }
+
+        // Initial load
+        loadItems();
+    </script>
 </body>
 </html>
