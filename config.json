@@ -1,0 +1,19 @@
+{
+    "vaultCode": "1312",
+    "items": [
+        {
+            "name": "Target Alpha",
+            "imageUrl": "https://via.placeholder.com/300",
+            "description": "Primary access point for Alpha systems.",
+            "acc": "admin_alpha",
+            "pwd": "alpha_secure_123"
+        },
+        {
+            "name": "Target Beta",
+            "imageUrl": "https://via.placeholder.com/300",
+            "description": "Secondary access for Beta network.",
+            "acc": "user_beta",
+            "pwd": "beta_pass_456"
+        }
+    ]
+}
